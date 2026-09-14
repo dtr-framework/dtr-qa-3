@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTR | Speech Functions &mdash; Sixteen Degrees Before Seven</title>
+<style>
+  :root{
+    --level: #6A1B9A;
+    --deep: #4A148C;
+    --ink: #172033;
+    --muted: #5B6B7F;
+    --done: #027A48;
+    --done-bg: #E7F6EF;
+    --miss: #E11D48;
+    --teal: #0F9D8A;
+    --teal-bg: #E6F7F4;
+    --teal-ink: #0B5F54;
+    --serif: ui-serif, Georgia, "Iowan Old Style", Palatino, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  body{ font-family: var(--sans); background: #EEF1F4; color: var(--ink); padding: 16px; }
+  .card{ background: #fff; border: 1px solid #DFE3E8; border-radius: 20px; max-width: 940px; margin: 0 auto; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+
+  /* MASTHEAD */
+  .mast{ background: var(--level); color: #fff; padding: 18px 22px 16px; }
+  .badge{ float: right; text-align: center; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #fff; font-size: 12px; font-weight: 700; line-height: 1.3; padding: 7px 12px; border-radius: 999px; margin-left: 12px; }
+  .brand{ font-size: 12px; font-weight: 700; letter-spacing: .16em; }
+  .title{ clear: both; text-align: center; font-family: var(--serif); font-size: 44px; font-weight: 600; line-height: 1.1; padding-top: 10px; }
+  .sub{ text-align: center; font-size: 11.5px; letter-spacing: .04em; opacity: .92; margin-top: 8px; }
+  .dots{ display: flex; gap: 7px; justify-content: center; margin-top: 12px; }
+  .dots i{ width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.35); display: block; }
+  .dots i.on{ background: #fff; }
+
+  .body{ padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* SHARED PLAY CONTROLS (SSF-R26) */
+  .pi{ flex: 0 0 auto; }
+  .ico{ width: 42px; height: 42px; border: none; border-radius: 50%; background: var(--level); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding-left: 3px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.14); }
+  .listen{ display: inline-flex; align-items: center; gap: 10px; background: var(--level); color: #fff; border: none; border-radius: 10px; padding: 10px 15px; font-size: 14.5px; font-weight: 700; font-family: var(--sans); cursor: pointer; }
+  .supbtn{ display: inline-flex; align-items: center; gap: 7px; background: var(--teal); color: #fff; border: none; border-radius: 8px; padding: 6px 11px; font-size: 12px; font-weight: 700; font-family: var(--sans); cursor: pointer; white-space: nowrap; }
+  .ico.playing, .listen.playing, .supbtn.playing{ background: #C62828 !important; animation: pulse 1.6s ease-in-out infinite; }
+  .playing .pi{ display: none !important; }
+  .ico.playing::before{ content: ""; width: 15px; height: 15px; border-radius: 3px; background: #fff; display: block; }
+  .listen.playing::before, .supbtn.playing::before{ content: ""; width: 12px; height: 12px; border-radius: 2px; background: #fff; display: block; }
+  @keyframes pulse{ 0%{transform:scale(1);} 50%{transform:scale(1.04);} 100%{transform:scale(1);} }
+
+  /* PANELS */
+  .panel{ background: #fff; border: 1px solid #E3E8EE; border-radius: 18px; }
+  .seg{ padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start; }
+  .seg + .seg{ border-top: 1px solid #EDF1F5; }
+  .seg .txt{ flex: 1; }
+  .lab{ font-size: 12px; font-weight: 700; letter-spacing: .14em; color: var(--muted); margin-bottom: 6px; }
+  .seg.lead{ background: color-mix(in srgb, var(--level) 7%, white); border-radius: 17px 17px 0 0; }
+  .seg.lead .lab{ color: var(--deep); }
+  .prose{ font-size: 16px; line-height: 1.65; }
+  .seg.lead .prose{ font-weight: 600; color: var(--ink); }
+  .seg.hist .prose{ font-style: italic; color: #41506B; }
+  .micnote{ font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  /* THE LOCK */
+  .lock{ background: #121A2B; border-radius: 18px; padding: 18px 18px 14px; color: #fff; }
+  .lock h2{ font-family: var(--serif); font-size: 19px; font-weight: 600; }
+  .lock .li{ font-size: 13px; color: #B7C2D4; margin: 6px 0 14px; line-height: 1.5; }
+  .cells{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .cell{ border: 1.5px dashed #3A4661; border-radius: 12px; padding: 12px 8px; text-align: center; opacity: .5; }
+  .cell .v{ font-family: var(--serif); font-size: 22px; font-weight: 600; }
+  .cell .k{ font-size: 10px; font-weight: 700; letter-spacing: .1em; color: #9FB0C9; margin-top: 5px; }
+  .cell.on{ border-style: solid; border-color: #2F7D63; background: #172A2A; opacity: 1; }
+  .axis{ display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; letter-spacing: .12em; color: #8494AE; margin-top: 12px; }
+
+  /* STOPS */
+  .stop{ display: flex; border: 1.5px dashed var(--miss); border-radius: 18px; overflow: hidden; }
+  .stop.done{ border-style: solid; border-color: var(--done); background: var(--done-bg); }
+  .tab{ flex: 0 0 66px; background: var(--level); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; padding: 14px 0; }
+  .stop.done .tab{ background: var(--done); }
+  .tab .n{ font-family: var(--serif); font-size: 32px; line-height: 1; }
+  .tab .lamp{ width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.45); }
+  .stop.done .tab .lamp{ background: #fff; }
+  .tab .vert{ writing-mode: vertical-rl; font-size: 9px; font-weight: 700; letter-spacing: .16em; opacity: .9; }
+  .sbody{ flex: 1; padding: 14px 16px 16px; min-width: 0; }
+  .who{ font-family: var(--serif); font-size: 25px; font-weight: 600; }
+  .rel{ font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .pill{ display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .12em; padding: 4px 10px; border-radius: 999px; margin-top: 8px; }
+  .pill.inf{ background: #EEF1F5; color: #55657D; }
+  .pill.frm{ background: var(--ink); color: #fff; }
+  .srow{ margin-top: 12px; }
+
+  /* RECORD PANEL */
+  .recpanel{ margin-top: 12px; border-radius: 14px; padding: 12px 14px; }
+  .recpanel .rp-live, .recpanel .rp-have{ display: none; }
+  .recpanel.missing{ border: 1.5px dashed var(--miss); background: #FFF5F7; }
+  .recpanel.live{ border: 1.5px solid #C62828; background: #C62828; color: #fff; }
+  .recpanel.live .rp-missing, .recpanel.live .rp-have{ display: none; }
+  .recpanel.live .rp-live{ display: block; }
+  .recpanel.have{ border: 1.5px solid var(--done); background: #fff; }
+  .recpanel.have .rp-missing, .recpanel.have .rp-live{ display: none; }
+  .recpanel.have .rp-have{ display: block; }
+  .rrow{ display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; }
+  .dot{ width: 9px; height: 9px; border-radius: 50%; background: var(--miss); animation: blink 1.4s ease-in-out infinite; }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+  @media (prefers-reduced-motion: reduce){ .dot{ animation: none; } .ico.playing, .listen.playing, .supbtn.playing, .recbtn.rec{ animation: none; } }
+  .sq{ width: 10px; height: 10px; border-radius: 2px; background: #fff; }
+  .timer{ margin-left: auto; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .recbtn{ display: block; width: 100%; margin-top: 10px; background: #fff; color: var(--miss); border: 2px solid var(--miss); border-radius: 10px; padding: 11px 14px; font-size: 14.5px; font-weight: 700; font-family: var(--sans); cursor: pointer; }
+  .stopbtn{ display: block; margin-top: 10px; background: #fff; color: #C62828; border: none; border-radius: 999px; padding: 8px 18px; font-size: 13px; font-weight: 700; font-family: var(--sans); cursor: pointer; }
+  .haverow{ display: flex; align-items: center; gap: 12px; }
+  .playmine{ flex: 0 0 auto; width: 38px; height: 38px; border: none; border-radius: 50%; background: var(--done); color: #fff; display: inline-flex; align-items: center; justify-content: center; padding-left: 3px; cursor: pointer; }
+  .wave{ flex: 1; height: 26px; min-width: 0; }
+  .wave rect{ fill: var(--done); opacity: .55; }
+  .dur{ font-size: 13px; font-weight: 600; color: var(--done); font-variant-numeric: tabular-nums; }
+  .againbtn{ margin-top: 10px; background: #fff; color: var(--ink); border: 1px solid #CBD3DE; border-radius: 9px; padding: 7px 13px; font-size: 12.5px; font-weight: 700; font-family: var(--sans); cursor: pointer; }
+  .unlim{ font-size: 12px; color: var(--muted); margin-top: 7px; }
+  .recerr{ font-size: 12.5px; font-weight: 600; color: var(--miss); margin-top: 8px; }
+
+/*SUP_STYLE_START*/
+  .sup{ margin-top: 12px; background: var(--teal-bg); border: 1px solid #BDE6DF; border-left: 4px solid var(--teal); border-radius: 10px; padding: 11px 13px; display: flex; gap: 11px; align-items: flex-start; }
+  .sup .slab{ font-size: 10px; font-weight: 700; letter-spacing: .12em; color: var(--teal-ink); margin-bottom: 5px; }
+  .sup .stxt{ flex: 1; font-size: 14.5px; line-height: 1.5; color: var(--teal-ink); }
+  .sup .bank{ display: block; font-size: 13px; font-weight: 600; margin-top: 5px; color: #16796B; }
+/*SUP_STYLE_END*/
+
+  .gotchip{ display: none; margin-top: 11px; font-size: 12.5px; font-weight: 700; color: var(--done); }
+  .stop.done .gotchip{ display: block; }
+
+  /* SUBMIT */
+  .subwrap{ text-align: center; margin-top: 4px; }
+  .submit{ background: var(--level); color: #fff; border: none; border-radius: 12px; padding: 14px 34px; font-size: 16.5px; font-weight: 700; font-family: var(--sans); letter-spacing: .02em; cursor: pointer; }
+  .submit:disabled{ background: #90A4AE; cursor: default; }
+  .count{ font-size: 12.5px; color: var(--muted); margin-top: 9px; }
+  .foot{ font-size: 11px; color: var(--muted); line-height: 1.6; border-top: 1px dashed #D1D5DB; padding-top: 12px; }
+
+  @media (max-width: 560px){
+    body{ padding: 8px; }
+    .title{ font-size: 34px; }
+    .prose{ font-size: 15.5px; }
+    .ico{ width: 40px; height: 40px; }
+    .cells{ grid-template-columns: repeat(2, 1fr); }
+    .seg{ padding: 14px; }
+    .body{ padding: 16px 14px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="mast">
+    <div class="badge">ELPAC Level 3<br>Lexile 650–1000L</div>
+    <div class="brand">DTR SPEECH FUNCTIONS</div>
+    <h1 class="title">Sixteen Degrees Before Seven</h1>
+    <div class="sub">SSF-MS6-L3-6501000-MSSCI6-RWS-MNA &middot; MS Science Grade 6 &middot; Atmospheric and Oceanic Circulation; Regional Climates</div>
+    <div class="dots"><i id="d0"></i><i id="d1"></i><i id="d2"></i><i id="d3"></i></div>
+  </div>
+
+  <div class="body">
+
+    <div class="panel">
+      <div class="seg">
+        <button class="ico" id="btnDir" aria-label="Play the directions"><svg class="pi" width="15" height="18" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+        <div class="txt">
+          <div class="lab">THE DIRECTIONS</div>
+          <div class="prose">You will talk to four people. Record what you would say to each one. You can record again as many times as you want. When all four are recorded, click Submit.</div>
+          <div class="micnote">The first time you press record, your computer will ask to use your microphone. Click Allow.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lock">
+      <h2>The wind board</h2>
+      <div class="li">As you record, the four numbers fill in. Find the gap between two places to see which wind is stronger.</div>
+      <div class="cells"><div class="cell" id="cell0"><div class="v">22°C</div><div class="k">SEA</div></div><div class="cell" id="cell1"><div class="v">26°C</div><div class="k">COAST</div></div><div class="cell" id="cell2"><div class="v">31°C</div><div class="k">HILLS</div></div><div class="cell" id="cell3"><div class="v">38°C</div><div class="k">DESERT</div></div></div>
+      <div class="axis"><span>COOLEST</span><span>HOTTEST</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="seg lead">
+        <button class="ico" id="btnSit" aria-label="Play the scene"><svg class="pi" width="15" height="18" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+        <div class="txt">
+          <div class="lab">THE SCENE</div>
+          <div class="prose">Your class runs the weather desk at the port for one day. You are alone in the radio room. The boats leave at seven, and the wind board must be done first. You need four numbers, and four people each have one.</div>
+        </div>
+      </div>
+      <div class="seg hist">
+        <button class="ico" id="btnHist" aria-label="Play the history"><svg class="pi" width="15" height="18" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+        <div class="txt">
+          <div class="lab">THE HISTORY</div>
+          <div class="prose">For a long time, sailors in Oman watched the wind. For half the year it blew one way. Then it turned and blew back. They called it mawsim, the Arabic word for season.</div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="stop" id="stopcard0">
+      <div class="tab">
+        <div class="n">1</div>
+        <div class="lamp"></div>
+        <div class="vert">NOT YET</div>
+      </div>
+      <div class="sbody">
+        <div class="who">Salim</div>
+        <div class="rel">In your class</div>
+        <div class="pill inf">INFORMAL</div>
+        <div class="srow">
+          <button class="listen" id="btnAsk0" aria-label="Play what to say at stop 1"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 1</button>
+        </div>
+        <div class="recpanel missing" id="rp0">
+          <div class="rp-missing">
+            <div class="rrow"><span class="dot"></span><span>Not recorded yet</span></div>
+            <button class="recbtn" id="rec0">Press to record.</button>
+          </div>
+          <div class="rp-live">
+            <div class="rrow"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" id="tm0">0:00</span></div>
+            <button class="stopbtn" id="stop0">Stop</button>
+          </div>
+          <div class="rp-have">
+            <div class="haverow">
+              <button class="playmine" id="rplay0" aria-label="Play your recording at stop 1"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+              <svg class="wave" viewBox="0 0 120 26" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="10" width="3" height="6" rx="1.5"/><rect x="5" y="7" width="3" height="11" rx="1.5"/><rect x="10" y="4" width="3" height="17" rx="1.5"/><rect x="15" y="8" width="3" height="9" rx="1.5"/><rect x="20" y="2" width="3" height="22" rx="1.5"/><rect x="25" y="6" width="3" height="14" rx="1.5"/><rect x="30" y="9" width="3" height="7" rx="1.5"/><rect x="35" y="3" width="3" height="19" rx="1.5"/><rect x="40" y="7" width="3" height="12" rx="1.5"/><rect x="45" y="1" width="3" height="24" rx="1.5"/><rect x="50" y="8" width="3" height="10" rx="1.5"/><rect x="55" y="5" width="3" height="16" rx="1.5"/><rect x="60" y="9" width="3" height="8" rx="1.5"/><rect x="65" y="2" width="3" height="21" rx="1.5"/><rect x="70" y="6" width="3" height="13" rx="1.5"/><rect x="75" y="10" width="3" height="6" rx="1.5"/><rect x="80" y="4" width="3" height="18" rx="1.5"/><rect x="85" y="7" width="3" height="11" rx="1.5"/><rect x="90" y="1" width="3" height="23" rx="1.5"/><rect x="95" y="8" width="3" height="9" rx="1.5"/><rect x="100" y="5" width="3" height="15" rx="1.5"/><rect x="105" y="9" width="3" height="7" rx="1.5"/><rect x="110" y="3" width="3" height="20" rx="1.5"/><rect x="115" y="7" width="3" height="12" rx="1.5"/></svg>
+              <span class="dur" id="dur0">0:00</span>
+            </div>
+            <button class="againbtn" id="again0">Record again</button>
+            <div class="unlim">You can record as many times as you want.</div>
+          </div>
+          <div class="recerr" id="err0"></div>
+        </div>
+<!--SUP_START-->
+        <div class="sup">
+          <button class="supbtn" id="btnSup0" aria-label="Play the support for stop 1"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Support</button>
+          <div class="stxt"><div class="slab">SMART SUPPORT</div>Salim, is there any way <b>______</b>?</div>
+        </div>
+<!--SUP_END-->
+        <div class="gotchip">SEA 22°C is on the wind board.</div>
+      </div>
+    </div>
+
+    <div class="stop" id="stopcard1">
+      <div class="tab">
+        <div class="n">2</div>
+        <div class="lamp"></div>
+        <div class="vert">NOT YET</div>
+      </div>
+      <div class="sbody">
+        <div class="who">Amal</div>
+        <div class="rel">In your class, at the coast station</div>
+        <div class="pill inf">INFORMAL</div>
+        <div class="srow">
+          <button class="listen" id="btnAsk1" aria-label="Play what to say at stop 2"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 2</button>
+        </div>
+        <div class="recpanel missing" id="rp1">
+          <div class="rp-missing">
+            <div class="rrow"><span class="dot"></span><span>Not recorded yet</span></div>
+            <button class="recbtn" id="rec1">Press to record.</button>
+          </div>
+          <div class="rp-live">
+            <div class="rrow"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" id="tm1">0:00</span></div>
+            <button class="stopbtn" id="stop1">Stop</button>
+          </div>
+          <div class="rp-have">
+            <div class="haverow">
+              <button class="playmine" id="rplay1" aria-label="Play your recording at stop 2"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+              <svg class="wave" viewBox="0 0 120 26" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="10" width="3" height="6" rx="1.5"/><rect x="5" y="7" width="3" height="11" rx="1.5"/><rect x="10" y="4" width="3" height="17" rx="1.5"/><rect x="15" y="8" width="3" height="9" rx="1.5"/><rect x="20" y="2" width="3" height="22" rx="1.5"/><rect x="25" y="6" width="3" height="14" rx="1.5"/><rect x="30" y="9" width="3" height="7" rx="1.5"/><rect x="35" y="3" width="3" height="19" rx="1.5"/><rect x="40" y="7" width="3" height="12" rx="1.5"/><rect x="45" y="1" width="3" height="24" rx="1.5"/><rect x="50" y="8" width="3" height="10" rx="1.5"/><rect x="55" y="5" width="3" height="16" rx="1.5"/><rect x="60" y="9" width="3" height="8" rx="1.5"/><rect x="65" y="2" width="3" height="21" rx="1.5"/><rect x="70" y="6" width="3" height="13" rx="1.5"/><rect x="75" y="10" width="3" height="6" rx="1.5"/><rect x="80" y="4" width="3" height="18" rx="1.5"/><rect x="85" y="7" width="3" height="11" rx="1.5"/><rect x="90" y="1" width="3" height="23" rx="1.5"/><rect x="95" y="8" width="3" height="9" rx="1.5"/><rect x="100" y="5" width="3" height="15" rx="1.5"/><rect x="105" y="9" width="3" height="7" rx="1.5"/><rect x="110" y="3" width="3" height="20" rx="1.5"/><rect x="115" y="7" width="3" height="12" rx="1.5"/></svg>
+              <span class="dur" id="dur1">0:00</span>
+            </div>
+            <button class="againbtn" id="again1">Record again</button>
+            <div class="unlim">You can record as many times as you want.</div>
+          </div>
+          <div class="recerr" id="err1"></div>
+        </div>
+<!--SUP_START-->
+        <div class="sup">
+          <button class="supbtn" id="btnSup1" aria-label="Play the support for stop 2"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Support</button>
+          <div class="stxt"><div class="slab">SMART SUPPORT</div>Amal, could you check <b>______</b>?</div>
+        </div>
+<!--SUP_END-->
+        <div class="gotchip">COAST 26°C is on the wind board.</div>
+      </div>
+    </div>
+
+    <div class="stop" id="stopcard2">
+      <div class="tab">
+        <div class="n">3</div>
+        <div class="lamp"></div>
+        <div class="vert">NOT YET</div>
+      </div>
+      <div class="sbody">
+        <div class="who">Mr. Al Harthy</div>
+        <div class="rel">Keeps the station folder</div>
+        <div class="pill frm">FORMAL</div>
+        <div class="srow">
+          <button class="listen" id="btnAsk2" aria-label="Play what to say at stop 3"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 3</button>
+        </div>
+        <div class="recpanel missing" id="rp2">
+          <div class="rp-missing">
+            <div class="rrow"><span class="dot"></span><span>Not recorded yet</span></div>
+            <button class="recbtn" id="rec2">Press to record.</button>
+          </div>
+          <div class="rp-live">
+            <div class="rrow"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" id="tm2">0:00</span></div>
+            <button class="stopbtn" id="stop2">Stop</button>
+          </div>
+          <div class="rp-have">
+            <div class="haverow">
+              <button class="playmine" id="rplay2" aria-label="Play your recording at stop 3"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+              <svg class="wave" viewBox="0 0 120 26" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="10" width="3" height="6" rx="1.5"/><rect x="5" y="7" width="3" height="11" rx="1.5"/><rect x="10" y="4" width="3" height="17" rx="1.5"/><rect x="15" y="8" width="3" height="9" rx="1.5"/><rect x="20" y="2" width="3" height="22" rx="1.5"/><rect x="25" y="6" width="3" height="14" rx="1.5"/><rect x="30" y="9" width="3" height="7" rx="1.5"/><rect x="35" y="3" width="3" height="19" rx="1.5"/><rect x="40" y="7" width="3" height="12" rx="1.5"/><rect x="45" y="1" width="3" height="24" rx="1.5"/><rect x="50" y="8" width="3" height="10" rx="1.5"/><rect x="55" y="5" width="3" height="16" rx="1.5"/><rect x="60" y="9" width="3" height="8" rx="1.5"/><rect x="65" y="2" width="3" height="21" rx="1.5"/><rect x="70" y="6" width="3" height="13" rx="1.5"/><rect x="75" y="10" width="3" height="6" rx="1.5"/><rect x="80" y="4" width="3" height="18" rx="1.5"/><rect x="85" y="7" width="3" height="11" rx="1.5"/><rect x="90" y="1" width="3" height="23" rx="1.5"/><rect x="95" y="8" width="3" height="9" rx="1.5"/><rect x="100" y="5" width="3" height="15" rx="1.5"/><rect x="105" y="9" width="3" height="7" rx="1.5"/><rect x="110" y="3" width="3" height="20" rx="1.5"/><rect x="115" y="7" width="3" height="12" rx="1.5"/></svg>
+              <span class="dur" id="dur2">0:00</span>
+            </div>
+            <button class="againbtn" id="again2">Record again</button>
+            <div class="unlim">You can record as many times as you want.</div>
+          </div>
+          <div class="recerr" id="err2"></div>
+        </div>
+<!--SUP_START-->
+        <div class="sup">
+          <button class="supbtn" id="btnSup2" aria-label="Play the support for stop 3"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Support</button>
+          <div class="stxt"><div class="slab">SMART SUPPORT</div>Mr. Al Harthy, would it be possible <b>______</b>?</div>
+        </div>
+<!--SUP_END-->
+        <div class="gotchip">HILLS 31°C is on the wind board.</div>
+      </div>
+    </div>
+
+    <div class="stop" id="stopcard3">
+      <div class="tab">
+        <div class="n">4</div>
+        <div class="lamp"></div>
+        <div class="vert">NOT YET</div>
+      </div>
+      <div class="sbody">
+        <div class="who">Ms. Al Balushi</div>
+        <div class="rel">The port director</div>
+        <div class="pill frm">FORMAL</div>
+        <div class="srow">
+          <button class="listen" id="btnAsk3" aria-label="Play what to say at stop 4"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 4</button>
+        </div>
+        <div class="recpanel missing" id="rp3">
+          <div class="rp-missing">
+            <div class="rrow"><span class="dot"></span><span>Not recorded yet</span></div>
+            <button class="recbtn" id="rec3">Press to record.</button>
+          </div>
+          <div class="rp-live">
+            <div class="rrow"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" id="tm3">0:00</span></div>
+            <button class="stopbtn" id="stop3">Stop</button>
+          </div>
+          <div class="rp-have">
+            <div class="haverow">
+              <button class="playmine" id="rplay3" aria-label="Play your recording at stop 4"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button>
+              <svg class="wave" viewBox="0 0 120 26" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="10" width="3" height="6" rx="1.5"/><rect x="5" y="7" width="3" height="11" rx="1.5"/><rect x="10" y="4" width="3" height="17" rx="1.5"/><rect x="15" y="8" width="3" height="9" rx="1.5"/><rect x="20" y="2" width="3" height="22" rx="1.5"/><rect x="25" y="6" width="3" height="14" rx="1.5"/><rect x="30" y="9" width="3" height="7" rx="1.5"/><rect x="35" y="3" width="3" height="19" rx="1.5"/><rect x="40" y="7" width="3" height="12" rx="1.5"/><rect x="45" y="1" width="3" height="24" rx="1.5"/><rect x="50" y="8" width="3" height="10" rx="1.5"/><rect x="55" y="5" width="3" height="16" rx="1.5"/><rect x="60" y="9" width="3" height="8" rx="1.5"/><rect x="65" y="2" width="3" height="21" rx="1.5"/><rect x="70" y="6" width="3" height="13" rx="1.5"/><rect x="75" y="10" width="3" height="6" rx="1.5"/><rect x="80" y="4" width="3" height="18" rx="1.5"/><rect x="85" y="7" width="3" height="11" rx="1.5"/><rect x="90" y="1" width="3" height="23" rx="1.5"/><rect x="95" y="8" width="3" height="9" rx="1.5"/><rect x="100" y="5" width="3" height="15" rx="1.5"/><rect x="105" y="9" width="3" height="7" rx="1.5"/><rect x="110" y="3" width="3" height="20" rx="1.5"/><rect x="115" y="7" width="3" height="12" rx="1.5"/></svg>
+              <span class="dur" id="dur3">0:00</span>
+            </div>
+            <button class="againbtn" id="again3">Record again</button>
+            <div class="unlim">You can record as many times as you want.</div>
+          </div>
+          <div class="recerr" id="err3"></div>
+        </div>
+<!--SUP_START-->
+        <div class="sup">
+          <button class="supbtn" id="btnSup3" aria-label="Play the support for stop 4"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Support</button>
+          <div class="stxt"><div class="slab">SMART SUPPORT</div>Ms. Al Balushi, before you sign, could I please <b>______</b>?</div>
+        </div>
+<!--SUP_END-->
+        <div class="gotchip">DESERT 38°C is on the wind board.</div>
+      </div>
+    </div>
+
+    <div class="subwrap">
+      <button class="submit" id="btnSubmit" disabled>Submit</button>
+      <div class="count" id="count">0 of 4 recorded</div>
+    </div>
+
+<!--FOOTER_START-->
+    <div class="foot">Content alignment: NGSS MS-ESS2-6 — Atmospheric and oceanic circulation; regional climates. ELD (Speaking — official ELPAC “Speech Functions”): PI.A.4, PII.B.3, PII.B.4, PII.B.5.</div>
+<!--FOOTER_END-->
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  function makeURL(b64){ try{ if(!b64 || b64.charAt(0)==='['){ return null; } var bin=atob(b64); var n=bin.length; var arr=new Uint8Array(n); for(var i=0;i<n;i++){ arr[i]=bin.charCodeAt(i); } return URL.createObjectURL(new Blob([arr],{type:'audio/mpeg'})); }catch(e){ return null; } }
+
+  var b64_dir="[BASE64_DIRECTIONS]";
+  var b64_sit="[BASE64_SITUATION]";
+  var b64_hist="[BASE64_HISTORY]";
+  var b64_ask=["[BASE64_ASK1]","[BASE64_ASK2]","[BASE64_ASK3]","[BASE64_ASK4]"];
+  var b64_ss=["[BASE64_SS_STOP1]","[BASE64_SS_STOP2]","[BASE64_SS_STOP3]","[BASE64_SS_STOP4]"]; //SSJS
+
+  function mk(b64){ var u=makeURL(b64); return u? new Audio(u): null; }
+  var aud={ dir:mk(b64_dir), sit:mk(b64_sit), hist:mk(b64_hist), ask:[], ss:[] };
+  for(var i=0;i<4;i++){ aud.ask.push(mk(b64_ask[i])); }
+  for(var s=0;s<4;s++){ aud.ss.push(mk(b64_ss[s])); } //SSJS
+
+  var current=null, currentBtn=null;
+  function stopCurrent(){ if(current){ try{ current.pause(); current.currentTime=0; }catch(e){} } var on=document.querySelectorAll('.playing'); for(var z=0;z<on.length;z++){ on[z].classList.remove('playing'); } current=null; currentBtn=null; }
+  function playAudio(audio,btn){ if(current===audio){ stopCurrent(); return; } stopCurrent(); if(!audio){ return; } current=audio; currentBtn=btn; if(btn){ btn.classList.add('playing'); } audio.onended=function(){ if(btn){ btn.classList.remove('playing'); } if(current===audio){ current=null; currentBtn=null; } }; try{ audio.currentTime=0; }catch(e){} var p=audio.play(); if(p&&p.catch){ p.catch(function(){}); } }
+  function bind(id,audio){ var btn=document.getElementById(id); if(!btn) return; var h=function(ev){ ev.preventDefault(); playAudio(audio,btn); }; btn.addEventListener('click',h); btn.addEventListener('touchend',h); }
+
+  bind('btnDir',aud.dir);
+  bind('btnSit',aud.sit);
+  bind('btnHist',aud.hist);
+  for(var a=0;a<4;a++){ bind('btnAsk'+a,aud.ask[a]); }
+  for(var k=0;k<4;k++){ bind('btnSup'+k,aud.ss[k]); } //SSJS
+
+  var recordings={}, locked=false;
+  function pad(n){ return (n<10?'0':'')+n; }
+  function fmt(sec){ return Math.floor(sec/60)+':'+pad(Math.floor(sec%60)); }
+
+  function setupRecorder(idx){
+    var panel=document.getElementById('rp'+idx), recBtn=document.getElementById('rec'+idx), stopBtn=document.getElementById('stop'+idx),
+        againBtn=document.getElementById('again'+idx), playBtn=document.getElementById('rplay'+idx), tm=document.getElementById('tm'+idx),
+        dur=document.getElementById('dur'+idx), err=document.getElementById('err'+idx), stopCard=document.getElementById('stopcard'+idx),
+        dot=document.getElementById('d'+idx), cellEl=document.getElementById('cell'+idx);
+    if(!panel) return;
+    var mr=null, chunks=[], playURL=null, t0=0, tick=null, secs=0;
+
+    function startRec(ev){
+      if(ev) ev.preventDefault();
+      if(locked) return;
+      if(!navigator.mediaDevices || !window.MediaRecorder){ err.textContent='Microphone blocked. Allow the microphone, then try again.'; return; }
+      navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+        stopCurrent(); err.textContent=''; chunks=[]; mr=new MediaRecorder(stream);
+        mr.ondataavailable=function(e){ if(e.data&&e.data.size>0) chunks.push(e.data); };
+        mr.onstop=function(){
+          var blob=new Blob(chunks,{type:(mr.mimeType||'audio/webm')});
+          recordings['stop'+idx]=blob;
+          if(playURL) URL.revokeObjectURL(playURL);
+          playURL=URL.createObjectURL(blob);
+          dur.textContent=fmt(secs);
+          panel.className='recpanel have';
+          if(stopCard) stopCard.classList.add('done');
+          if(dot) dot.classList.add('on');
+          if(cellEl) cellEl.classList.add('on');
+          stream.getTracks().forEach(function(t){ t.stop(); });
+          if(tick){ clearInterval(tick); tick=null; }
+          updateSubmit();
+        };
+        mr.start(); secs=0; t0=Date.now(); panel.className='recpanel live'; tm.textContent='0:00';
+        tick=setInterval(function(){ secs=(Date.now()-t0)/1000; tm.textContent=fmt(secs); },250);
+      }).catch(function(){ err.textContent='Microphone blocked. Allow the microphone, then try again.'; });
+    }
+    function stopRec(ev){ if(ev) ev.preventDefault(); if(mr && mr.state!=='inactive'){ mr.stop(); } }
+    function playMine(ev){ if(ev) ev.preventDefault(); if(playURL){ stopCurrent(); var a=new Audio(playURL); a.play().catch(function(){}); } }
+    function again(ev){ if(ev) ev.preventDefault(); if(locked) return; panel.className='recpanel missing'; startRec(); }
+
+    recBtn.addEventListener('click',startRec); recBtn.addEventListener('touchend',startRec);
+    stopBtn.addEventListener('click',stopRec); stopBtn.addEventListener('touchend',stopRec);
+    playBtn.addEventListener('click',playMine); playBtn.addEventListener('touchend',playMine);
+    againBtn.addEventListener('click',again); againBtn.addEventListener('touchend',again);
+  }
+  for(var r=0;r<4;r++){ setupRecorder(r); }
+
+  var submitBtn=document.getElementById('btnSubmit'), countEl=document.getElementById('count');
+  function countRec(){ var c=0; for(var i=0;i<4;i++){ if(recordings['stop'+i]) c++; } return c; }
+  function updateSubmit(){ var c=countRec(); countEl.textContent=c+' of 4 recorded'; submitBtn.disabled=(c<4)||locked; }
+  function blobToB64(blob){ return new Promise(function(res){ var r=new FileReader(); r.onloadend=function(){ res(String(r.result).split(',')[1]||''); }; r.readAsDataURL(blob); }); }
+  function getParam(n){ try{ return new URLSearchParams(window.location.search).get(n); }catch(e){ return null; } }
+
+  submitBtn.addEventListener('click',function(){
+    if(locked) return;
+    if(countRec()<4){ return; }
+    locked=true; submitBtn.disabled=true;
+    document.querySelectorAll('.recbtn,.againbtn').forEach(function(b){ b.disabled=true; });
+    countEl.textContent='Packaging your recordings\u2026';
+    var keys=['stop0','stop1','stop2','stop3'];
+    Promise.all(keys.map(function(k){ return blobToB64(recordings[k]).then(function(b){ return {stop:k,type:recordings[k].type,data:b}; }); })).then(function(items){
+      var payload={ tag:'SSF-MS6-L3-6501000-MSSCI6-RWS-MNA', student_id:getParam('sid')||'', sheet_id:getParam('sheet')||'', recordings:items };
+      var endpoint=window.DTR_SUBMIT_URL||getParam('submit');
+      if(endpoint){
+        fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+          .then(function(){ countEl.textContent='Submitted \u2713 Your teacher will listen and score your four recordings.'; })
+          .catch(function(){ countEl.textContent='Recorded and packaged, but could not reach the server. Tell your teacher.'; });
+      } else {
+        countEl.textContent='Recordings ready \u2713 (the submission link is added by your teacher\u2019s tracker).';
+      }
+    });
+  });
+  updateSubmit();
+})();
+</script>
+</body>
+</html>
