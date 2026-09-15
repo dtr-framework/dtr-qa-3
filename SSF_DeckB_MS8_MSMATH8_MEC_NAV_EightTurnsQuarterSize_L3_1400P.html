@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eight Turns, Quarter Size &mdash; SSF-MS8-L3-1400P-MSMATH8-MEC-NAV &mdash; Deck B &mdash; Level 3 &middot; ≥1400L</title>
+<style>:root{--level:#6A1B9A;--deep:#4A148C;--ink:#172033;--muted:#5B6B7F;--done:#027A48;--done-bg:#E7F6EF;--miss:#E11D48;--teal:#0F9D8A;--teal-bg:#E6F7F4;--teal-ink:#0B5F54;--serif:ui-serif, Georgia, "Iowan Old Style", Palatino, serif;--sans:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#F4F6F9;font-family:var(--sans);color:var(--ink);
+ -webkit-text-size-adjust:100%}
+.card{max-width:820px;margin:0 auto;padding:0 0 54px}
+.mast{background:var(--level);color:#fff;padding:20px 26px 22px;position:relative}
+.brand{font-size:12px;font-weight:700;letter-spacing:.16em}
+.badge{float:right;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+ border-radius:999px;padding:5px 13px;font-size:11.5px;font-weight:700;letter-spacing:.04em;
+ margin-top:-2px}
+.title{clear:both;text-align:center;font-family:var(--serif);font-size:44px;line-height:1.08;
+ margin:16px 0 6px;font-weight:600}
+.sub{clear:both;text-align:center;font-size:11.5px;letter-spacing:.12em;font-weight:700;
+ opacity:.82}
+.dots{clear:both;display:flex;gap:8px;justify-content:center;margin-top:14px}
+.dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.32);
+ border:1px solid rgba(255,255,255,.5);display:block}
+.dots i.on{background:#fff;border-color:#fff}
+.wrap{padding:22px 22px 0}
+.panel{background:#fff;border:1px solid #E3E8EE;border-radius:18px;margin-bottom:18px}
+.seg{padding:16px 18px}
+.seg+.seg{border-top:1px solid #EDF1F5}
+.seg.lead{background:color-mix(in srgb, var(--level) 7%, white);border-radius:17px 17px 0 0}
+.lab{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--muted);
+ margin:0 0 9px;display:block}
+.seg.lead .lab{color:var(--deep)}
+.bd{font-size:16px;line-height:1.65;margin:0}
+.seg.lead .bd{font-weight:600;color:var(--ink)}
+.seg.hist .bd{font-style:italic;color:#41506B}
+.micnote{font-size:12px;color:var(--muted);margin:9px 0 0;line-height:1.5}
+.row{display:flex;align-items:flex-start;gap:14px}
+.row .grow{flex:1;min-width:0}
+.ico{width:42px;height:42px;min-width:42px;border-radius:50%;border:0;background:var(--level);
+ color:#fff;display:inline-flex;align-items:center;justify-content:center;padding-left:3px;
+ box-shadow:0 1px 3px rgba(0,0,0,0.14);cursor:pointer;position:relative}
+.ico.playing{background:#C62828;animation:pulse 1.6s infinite}
+.lock{background:#121A2B;border-radius:18px;padding:20px 20px 18px;margin-bottom:18px;color:#fff}
+.lock h2{font-family:var(--serif);font-size:19px;margin:0 0 6px;font-weight:600}
+.lock p{font-size:13.5px;line-height:1.55;margin:0 0 15px;color:#AFBED2}
+.cells{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.cell{border:1.5px dashed #3A4A63;border-radius:11px;padding:11px 9px;text-align:center;
+ opacity:.45;transition:opacity .2s}
+.cell .v{font-family:var(--serif);font-size:20px;font-weight:600;display:block;line-height:1.1}
+.cell .l{font-size:9.5px;letter-spacing:.08em;font-weight:700;color:#AFBED2;display:block;
+ margin-top:5px}
+.cell.on{opacity:1;border-style:solid;border-color:#027A48;background:rgba(2,122,72,.18)}
+.axis{display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.1em;
+ font-weight:700;color:#7F92AB;margin-top:11px}
+.stop{display:flex;border:1.5px dashed var(--miss);border-radius:18px;background:#fff;
+ overflow:hidden;margin-bottom:18px}
+.stop.done{border-style:solid;border-color:var(--done);background:var(--done-bg)}
+.tab{width:66px;min-width:66px;background:var(--level);border:0;color:#fff;display:flex;
+ flex-direction:column;align-items:center;justify-content:flex-start;padding:14px 0 16px;gap:9px}
+.stop.done .tab{background:var(--done)}
+.tab .n{font-family:var(--serif);font-size:32px;line-height:1;font-weight:600}
+.lamp{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35);
+ border:1px solid rgba(255,255,255,.6)}
+.stop.done .lamp{background:#fff;border-color:#fff}
+.tab .w{writing-mode:vertical-rl;text-orientation:mixed;font-size:9px;letter-spacing:.16em;
+ font-weight:700;opacity:.9}
+.sbody{flex:1;min-width:0;padding:16px 18px 18px;background:#fff}
+.who{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1.15;margin:0}
+.rel{font-size:13px;color:var(--muted);margin:4px 0 0}
+.pill{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.12em;
+ padding:4px 9px;border-radius:999px;margin-top:9px}
+.pill.inf{background:#EEF1F5;color:#4A5A70}
+.pill.frm{background:var(--ink);color:#fff}
+.listen{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+ min-height:44px;font-size:14.5px;font-weight:700;border:0;border-radius:12px;
+ background:var(--level);color:#fff;padding:11px 16px;cursor:pointer;margin-top:14px;
+ font-family:var(--sans)}
+.listen.playing{background:#C62828;animation:ssf-pulse 1.4s ease-in-out infinite}
+.recpanel{margin-top:14px;border-radius:13px;padding:13px 14px}
+.recpanel.missing{border:1.5px dashed var(--miss);background:#FFF5F7}
+.recpanel.live{border:1.5px solid #C62828;background:#FFF0F1}
+.recpanel.have{border:1.5px solid var(--done);background:#fff}
+.recpanel>div{display:none}
+.recpanel.missing .rpmiss{display:flex}
+.recpanel.live .rplive{display:flex}
+.recpanel.have .rphave{display:flex}
+.rpmiss,.rplive,.rphave{align-items:center;gap:11px;flex-wrap:wrap;font-size:13.5px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--miss);animation:blip 1.4s infinite}
+.sq{width:11px;height:11px;border-radius:2px;background:#C62828}
+.recbtn,.again,.stopbtn{font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;
+ border-radius:9px;padding:9px 14px;border:0}
+.recbtn{background:var(--miss);color:#fff}
+.stopbtn{background:#fff;color:#C62828;border:1.5px solid #fff}
+.again{background:#EEF1F5;color:var(--ink)}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;color:#C62828}
+.playrec{width:34px;height:34px;min-width:34px;border-radius:50%;border:0;background:var(--done);
+ color:#fff;display:inline-flex;align-items:center;justify-content:center;padding-left:2px;
+ cursor:pointer}
+.playrec.playing{background:#C62828}
+.wave{width:120px;height:26px;color:var(--done)}
+.wave rect{fill:var(--done);opacity:.62}
+.dur{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.unlim{flex-basis:100%;font-size:12px;color:var(--muted);margin-top:2px}
+.recerr{font-size:12.5px;color:var(--miss);font-weight:600;margin-top:9px}
+.recpanel .recerr.show{display:block}
+.chip{display:none;align-items:center;gap:8px;margin-top:13px;background:var(--done-bg);
+ border:1px solid var(--done);color:#04603A;border-radius:999px;padding:7px 13px;
+ font-size:12.5px;font-weight:700;width:-moz-fit-content;width:fit-content}
+.chip.show{display:inline-flex}
+.subwrap{text-align:center;padding:6px 22px 0}
+.submit{font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.04em;border:0;
+ border-radius:13px;padding:15px 46px;color:#fff;background:#90A4AE;cursor:not-allowed}
+.submit.ready{background:var(--level);cursor:pointer}
+.counter{font-size:13px;color:var(--muted);margin-top:11px;font-weight:600}
+.done-msg{display:none;font-size:13.5px;color:#04603A;font-weight:700;margin-top:11px}
+.done-msg.show{display:block}
+.foot{margin:24px 22px 0;font-size:11px;line-height:1.7;color:var(--muted);
+ border-top:1px solid #E3E8EE;padding-top:14px}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes ssf-pulse{0%,100%{opacity:1}50%{opacity:.72}}
+.recpanel.live{animation:ssf-pulse 1.4s ease-in-out infinite}
+@keyframes blip{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){
+ .dot{animation:none}
+ .ico.playing{animation:none}
+ .listen.playing{animation:none}
+ .recpanel.live{animation:none}
+}
+@media (max-width:560px){
+ .title{font-size:34px}
+ .bd{font-size:15.5px}
+ .wrap{padding:16px 14px 0}
+ .mast{padding:16px 16px 18px}
+ .ico{width:40px;height:40px;min-width:40px}
+ .cells{grid-template-columns:repeat(2,1fr)}
+ .seg{padding:14px}
+ .foot,.subwrap{margin-left:14px;margin-right:14px;padding-left:0;padding-right:0}
+}
+.playing .pi{display:none !important}
+.ico.playing::before,.listen.playing::before,.playrec.playing::before{content:"";
+ background:#fff;border-radius:2px;display:block}
+.ico.playing::before,.playrec.playing::before{width:15px;height:15px;margin-left:-3px}
+.listen.playing::before{width:12px;height:12px}
+</style>
+</head>
+<body>
+<div class="card">
+<header class="mast"><span class="badge">ELPAC Level 3 · Lexile ≥1400L</span><div class="brand">DTR SPEECH FUNCTIONS</div><h1 class="title">Eight Turns, Quarter Size</h1><div class="sub">SSF-MS8-L3-1400P-MSMATH8-MEC-NAV</div><div class="dots"><i data-dot="0"></i><i data-dot="1"></i><i data-dot="2"></i><i data-dot="3"></i></div></header>
+<div class="wrap">
+<section class="panel"><div class="seg"><div class="row"><button class="ico" id="btnDir" data-audio="dir" aria-label="Listen to the directions"><svg class="pi" viewBox="0 0 11 13" width="15" height="18" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><div class="grow"><span class="lab">THE DIRECTIONS</span><p class="bd">You will talk to four people. Record what you would say to each one. You can record again as many times as you want. When all four are recorded, click Submit.</p><p class="micnote">The first time you press record, your computer will ask to use your microphone. Click Allow.</p></div></div></div></section>
+<section class="lock"><h2>The sign</h2><p>As you record, the four moves fill in. A whole turn is 360 degrees. Divide it by one turn.</p><div class="cells"><div class="cell" data-cell="0"><span class="v">45°</span><span class="l">TURN</span></div><div class="cell" data-cell="1"><span class="v">FLIP</span><span class="l">AT THE CENTER LINE</span></div><div class="cell" data-cell="2"><span class="v">6 in.</span><span class="l">MOVE</span></div><div class="cell" data-cell="3"><span class="v">1/4</span><span class="l">SIZE</span></div></div><div class="axis"><span>SAME SIZE</span><span>NEW SIZE</span></div></section>
+<section class="panel"><div class="seg lead"><div class="row"><button class="ico" id="btnSit" data-audio="sit" aria-label="Listen to the scene"><svg class="pi" viewBox="0 0 11 13" width="15" height="18" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><div class="grow"><span class="lab">THE SCENE</span><p class="bd">You made a museum wall for family night. The big star quilt is already hanging. You are alone at the wall. The sign next to it is still empty. You need four moves for the sign. Four people each can help you.</p></div></div></div><div class="seg hist"><div class="row"><button class="ico" id="btnHist" data-audio="hist" aria-label="Listen to the history"><svg class="pi" viewBox="0 0 11 13" width="15" height="18" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><div class="grow"><span class="lab">THE HISTORY</span><p class="bd">This wall is about Lakota star quilts. Families give them as gifts at big events. One big star is made from many small diamonds. The same diamond turns around the center again and again.</p></div></div></div></section>
+<section class="stop" data-stop="0" id="stop0"><div class="tab"><span class="n">1</span><span class="lamp"></span><span class="w" data-word="0">NOT YET</span></div><div class="sbody"><p class="who">Wanbli</p><p class="rel">Your cousin, at the next table</p><span class="pill inf">INFORMAL</span><div><button class="listen" id="btnAsk0" data-audio="ask0" aria-label="Listen to stop 1"><svg class="pi" viewBox="0 0 11 13" width="13" height="15" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 1</button></div><div class="recpanel missing" data-panel="0"><div class="rpmiss"><span class="dot"></span><span>Not recorded yet</span><button class="recbtn" data-rec="0">Press to record.</button></div><div class="rplive"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" data-timer="0">0:00</span><button class="stopbtn" data-stoprec="0">Stop</button></div><div class="rphave"><button class="playrec" data-playrec="0" aria-label="Play your recording for stop 1"><svg class="pi" viewBox="0 0 11 13" width="12" height="14" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" viewBox="0 0 120 26" aria-hidden="true"><rect x="1" y="10" width="3" height="6" rx="1.5"/><rect x="7" y="7" width="3" height="12" rx="1.5"/><rect x="13" y="3" width="3" height="20" rx="1.5"/><rect x="19" y="9" width="3" height="9" rx="1.5"/><rect x="25" y="1" width="3" height="24" rx="1.5"/><rect x="31" y="6" width="3" height="14" rx="1.5"/><rect x="37" y="9" width="3" height="8" rx="1.5"/><rect x="43" y="4" width="3" height="18" rx="1.5"/><rect x="49" y="2" width="3" height="22" rx="1.5"/><rect x="55" y="8" width="3" height="10" rx="1.5"/><rect x="61" y="5" width="3" height="16" rx="1.5"/><rect x="67" y="10" width="3" height="6" rx="1.5"/><rect x="73" y="7" width="3" height="13" rx="1.5"/><rect x="79" y="3" width="3" height="21" rx="1.5"/><rect x="85" y="9" width="3" height="9" rx="1.5"/><rect x="91" y="5" width="3" height="17" rx="1.5"/><rect x="97" y="1" width="3" height="24" rx="1.5"/><rect x="103" y="8" width="3" height="11" rx="1.5"/><rect x="109" y="10" width="3" height="7" rx="1.5"/><rect x="115" y="6" width="3" height="14" rx="1.5"/></svg><span class="dur" data-dur="0"></span><button class="again" data-rec="0">Record again</button><div class="unlim">You can record as many times as you want.</div></div><div class="recerr" data-err="0">Microphone blocked. Allow the microphone, then try again.</div></div><div class="chip" data-chip="0">Added to the sign: TURN 45°</div></div></section>
+<section class="stop" data-stop="1" id="stop1"><div class="tab"><span class="n">2</span><span class="lamp"></span><span class="w" data-word="1">NOT YET</span></div><div class="sbody"><p class="who">Tasina</p><p class="rel">Your little sister, at the wall</p><span class="pill inf">INFORMAL</span><div><button class="listen" id="btnAsk1" data-audio="ask1" aria-label="Listen to stop 2"><svg class="pi" viewBox="0 0 11 13" width="13" height="15" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 2</button></div><div class="recpanel missing" data-panel="1"><div class="rpmiss"><span class="dot"></span><span>Not recorded yet</span><button class="recbtn" data-rec="1">Press to record.</button></div><div class="rplive"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" data-timer="1">0:00</span><button class="stopbtn" data-stoprec="1">Stop</button></div><div class="rphave"><button class="playrec" data-playrec="1" aria-label="Play your recording for stop 2"><svg class="pi" viewBox="0 0 11 13" width="12" height="14" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" viewBox="0 0 120 26" aria-hidden="true"><rect x="1" y="10" width="3" height="6" rx="1.5"/><rect x="7" y="7" width="3" height="12" rx="1.5"/><rect x="13" y="3" width="3" height="20" rx="1.5"/><rect x="19" y="9" width="3" height="9" rx="1.5"/><rect x="25" y="1" width="3" height="24" rx="1.5"/><rect x="31" y="6" width="3" height="14" rx="1.5"/><rect x="37" y="9" width="3" height="8" rx="1.5"/><rect x="43" y="4" width="3" height="18" rx="1.5"/><rect x="49" y="2" width="3" height="22" rx="1.5"/><rect x="55" y="8" width="3" height="10" rx="1.5"/><rect x="61" y="5" width="3" height="16" rx="1.5"/><rect x="67" y="10" width="3" height="6" rx="1.5"/><rect x="73" y="7" width="3" height="13" rx="1.5"/><rect x="79" y="3" width="3" height="21" rx="1.5"/><rect x="85" y="9" width="3" height="9" rx="1.5"/><rect x="91" y="5" width="3" height="17" rx="1.5"/><rect x="97" y="1" width="3" height="24" rx="1.5"/><rect x="103" y="8" width="3" height="11" rx="1.5"/><rect x="109" y="10" width="3" height="7" rx="1.5"/><rect x="115" y="6" width="3" height="14" rx="1.5"/></svg><span class="dur" data-dur="1"></span><button class="again" data-rec="1">Record again</button><div class="unlim">You can record as many times as you want.</div></div><div class="recerr" data-err="1">Microphone blocked. Allow the microphone, then try again.</div></div><div class="chip" data-chip="1">Added to the sign: AT THE CENTER LINE FLIP</div></div></section>
+<section class="stop" data-stop="2" id="stop2"><div class="tab"><span class="n">3</span><span class="lamp"></span><span class="w" data-word="2">NOT YET</span></div><div class="sbody"><p class="who">Mr. Iron Heart</p><p class="rel">The art teacher setting up the wall</p><span class="pill frm">FORMAL</span><div><button class="listen" id="btnAsk2" data-audio="ask2" aria-label="Listen to stop 3"><svg class="pi" viewBox="0 0 11 13" width="13" height="15" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 3</button></div><div class="recpanel missing" data-panel="2"><div class="rpmiss"><span class="dot"></span><span>Not recorded yet</span><button class="recbtn" data-rec="2">Press to record.</button></div><div class="rplive"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" data-timer="2">0:00</span><button class="stopbtn" data-stoprec="2">Stop</button></div><div class="rphave"><button class="playrec" data-playrec="2" aria-label="Play your recording for stop 3"><svg class="pi" viewBox="0 0 11 13" width="12" height="14" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" viewBox="0 0 120 26" aria-hidden="true"><rect x="1" y="10" width="3" height="6" rx="1.5"/><rect x="7" y="7" width="3" height="12" rx="1.5"/><rect x="13" y="3" width="3" height="20" rx="1.5"/><rect x="19" y="9" width="3" height="9" rx="1.5"/><rect x="25" y="1" width="3" height="24" rx="1.5"/><rect x="31" y="6" width="3" height="14" rx="1.5"/><rect x="37" y="9" width="3" height="8" rx="1.5"/><rect x="43" y="4" width="3" height="18" rx="1.5"/><rect x="49" y="2" width="3" height="22" rx="1.5"/><rect x="55" y="8" width="3" height="10" rx="1.5"/><rect x="61" y="5" width="3" height="16" rx="1.5"/><rect x="67" y="10" width="3" height="6" rx="1.5"/><rect x="73" y="7" width="3" height="13" rx="1.5"/><rect x="79" y="3" width="3" height="21" rx="1.5"/><rect x="85" y="9" width="3" height="9" rx="1.5"/><rect x="91" y="5" width="3" height="17" rx="1.5"/><rect x="97" y="1" width="3" height="24" rx="1.5"/><rect x="103" y="8" width="3" height="11" rx="1.5"/><rect x="109" y="10" width="3" height="7" rx="1.5"/><rect x="115" y="6" width="3" height="14" rx="1.5"/></svg><span class="dur" data-dur="2"></span><button class="again" data-rec="2">Record again</button><div class="unlim">You can record as many times as you want.</div></div><div class="recerr" data-err="2">Microphone blocked. Allow the microphone, then try again.</div></div><div class="chip" data-chip="2">Added to the sign: MOVE 6 in.</div></div></section>
+<section class="stop" data-stop="3" id="stop3"><div class="tab"><span class="n">4</span><span class="lamp"></span><span class="w" data-word="3">NOT YET</span></div><div class="sbody"><p class="who">Ms. Standing Bear</p><p class="rel">The principal, who runs family night</p><span class="pill frm">FORMAL</span><div><button class="listen" id="btnAsk3" data-audio="ask3" aria-label="Listen to stop 4"><svg class="pi" viewBox="0 0 11 13" width="13" height="15" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg> Listen to Stop 4</button></div><div class="recpanel missing" data-panel="3"><div class="rpmiss"><span class="dot"></span><span>Not recorded yet</span><button class="recbtn" data-rec="3">Press to record.</button></div><div class="rplive"><span class="sq"></span><span>Recording&hellip;</span><span class="timer" data-timer="3">0:00</span><button class="stopbtn" data-stoprec="3">Stop</button></div><div class="rphave"><button class="playrec" data-playrec="3" aria-label="Play your recording for stop 4"><svg class="pi" viewBox="0 0 11 13" width="12" height="14" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" viewBox="0 0 120 26" aria-hidden="true"><rect x="1" y="10" width="3" height="6" rx="1.5"/><rect x="7" y="7" width="3" height="12" rx="1.5"/><rect x="13" y="3" width="3" height="20" rx="1.5"/><rect x="19" y="9" width="3" height="9" rx="1.5"/><rect x="25" y="1" width="3" height="24" rx="1.5"/><rect x="31" y="6" width="3" height="14" rx="1.5"/><rect x="37" y="9" width="3" height="8" rx="1.5"/><rect x="43" y="4" width="3" height="18" rx="1.5"/><rect x="49" y="2" width="3" height="22" rx="1.5"/><rect x="55" y="8" width="3" height="10" rx="1.5"/><rect x="61" y="5" width="3" height="16" rx="1.5"/><rect x="67" y="10" width="3" height="6" rx="1.5"/><rect x="73" y="7" width="3" height="13" rx="1.5"/><rect x="79" y="3" width="3" height="21" rx="1.5"/><rect x="85" y="9" width="3" height="9" rx="1.5"/><rect x="91" y="5" width="3" height="17" rx="1.5"/><rect x="97" y="1" width="3" height="24" rx="1.5"/><rect x="103" y="8" width="3" height="11" rx="1.5"/><rect x="109" y="10" width="3" height="7" rx="1.5"/><rect x="115" y="6" width="3" height="14" rx="1.5"/></svg><span class="dur" data-dur="3"></span><button class="again" data-rec="3">Record again</button><div class="unlim">You can record as many times as you want.</div></div><div class="recerr" data-err="3">Microphone blocked. Allow the microphone, then try again.</div></div><div class="chip" data-chip="3">Added to the sign: SIZE 1/4</div></div></section>
+</div>
+<div class="subwrap"><button class="submit" disabled>Submit</button><div class="counter">0 of 4 recorded</div><div class="done-msg">Your four recordings are locked and sent to your teacher.</div></div>
+</div>
+<script>
+var B64 = {
+ dir:"[BASE64_DIRECTIONS]", sit:"[BASE64_SITUATION]", hist:"[BASE64_HISTORY]",
+ ask0:"[BASE64_ASK1]", ask1:"[BASE64_ASK2]", ask2:"[BASE64_ASK3]", ask3:"[BASE64_ASK4]"
+};
+
+var URLS = {};
+(function(){
+ for (var k in B64) {
+  var b = B64[k];
+  if (!b || b.charAt(0) === "[") { URLS[k] = null; continue; }
+  try {
+   var bin = atob(b), n = bin.length, u = new Uint8Array(n);
+   for (var i = 0; i < n; i++) { u[i] = bin.charCodeAt(i); }
+   URLS[k] = URL.createObjectURL(new Blob([u], {type:"audio/mpeg"}));
+  } catch (e) { URLS[k] = null; }
+ }
+})();
+
+var AUD = {}, cur = null, curBtn = null;
+function stopCurrent(){
+ if (cur) { try { cur.pause(); cur.currentTime = 0; } catch(e){} }
+ if (curBtn) { curBtn.classList.remove("playing"); }
+ cur = null; curBtn = null;
+}
+function playAudio(key, btn){
+ if (curBtn === btn) { stopCurrent(); return; }
+ stopCurrent();
+ var url = URLS[key];
+ if (!url) { return; }
+ if (!AUD[key]) { AUD[key] = new Audio(url); }
+ var a = AUD[key];
+ try { a.currentTime = 0; } catch(e){}
+ cur = a; curBtn = btn; btn.classList.add("playing");
+ a.onended = function(){ stopCurrent(); };
+ var p = a.play();
+ if (p && p.catch) { p.catch(function(){ stopCurrent(); }); }
+}
+
+var recs = [null,null,null,null], recUrls = [null,null,null,null];
+var mrec = null, chunks = [], active = -1, tmr = null, t0 = 0, submitted = false;
+var playRecAud = null, playRecBtn = null;
+
+function $(sel){ return document.querySelector(sel); }
+function all(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+function panel(i){ return $('[data-panel="'+i+'"]'); }
+function setState(i, st){
+ var p = panel(i);
+ p.className = "recpanel " + st;
+}
+function fmt(ms){
+ var s = Math.floor(ms/1000), m = Math.floor(s/60);
+ s = s % 60;
+ return m + ":" + (s < 10 ? "0" : "") + s;
+}
+function refresh(){
+ var n = 0, i;
+ for (i = 0; i < 4; i++) { if (recs[i]) { n++; } }
+ $(".counter").textContent = n + " of 4 recorded";
+ var b = $(".submit");
+ if (n === 4 && !submitted) { b.classList.add("ready"); b.disabled = false; }
+ else { b.classList.remove("ready"); b.disabled = true; }
+ for (i = 0; i < 4; i++) {
+  var on = !!recs[i];
+  $('[data-cell="'+i+'"]').classList.toggle("on", on);
+  $('[data-dot="'+i+'"]').classList.toggle("on", on);
+  $('[data-chip="'+i+'"]').classList.toggle("show", on);
+  $('#stop'+i).classList.toggle("done", on);
+  $('[data-word="'+i+'"]').textContent = on ? "RECORDED" : "NOT YET";
+ }
+}
+function stopRecording(){
+ if (mrec && mrec.state !== "inactive") { try { mrec.stop(); } catch(e){} }
+}
+function startRec(i){
+ if (submitted) { return; }
+ if (active > -1) { stopRecording(); }
+ if (playRecAud) { try { playRecAud.pause(); } catch(e){} if (playRecBtn) { playRecBtn.classList.remove("playing"); } }
+ stopCurrent();
+ $('[data-err="'+i+'"]').classList.remove("show");
+ if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+  $('[data-err="'+i+'"]').classList.add("show"); return;
+ }
+ navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+  chunks = [];
+  try { mrec = new MediaRecorder(stream); }
+  catch (e) { $('[data-err="'+i+'"]').classList.add("show"); return; }
+  active = i;
+  mrec.ondataavailable = function(ev){ if (ev.data && ev.data.size) { chunks.push(ev.data); } };
+  mrec.onstop = function(){
+   var dur = Date.now() - t0;
+   var blob = new Blob(chunks, {type: mrec.mimeType || "audio/webm"});
+   recs[i] = blob;
+   if (recUrls[i]) { URL.revokeObjectURL(recUrls[i]); }
+   recUrls[i] = URL.createObjectURL(blob);
+   $('[data-dur="'+i+'"]').textContent = fmt(dur);
+   setState(i, "have");
+   if (tmr) { clearInterval(tmr); tmr = null; }
+   active = -1;
+   stream.getTracks().forEach(function(t){ t.stop(); });
+   refresh();
+  };
+  t0 = Date.now();
+  setState(i, "live");
+  $('[data-timer="'+i+'"]').textContent = "0:00";
+  tmr = setInterval(function(){
+   $('[data-timer="'+i+'"]').textContent = fmt(Date.now() - t0);
+  }, 250);
+  mrec.start();
+ }).catch(function(){
+  $('[data-err="'+i+'"]').classList.add("show");
+ });
+}
+function playOwn(i, btn){
+ if (playRecBtn === btn && playRecAud && !playRecAud.paused) {
+  playRecAud.pause(); btn.classList.remove("playing"); return;
+ }
+ stopCurrent();
+ if (playRecAud) { try { playRecAud.pause(); } catch(e){} }
+ if (playRecBtn) { playRecBtn.classList.remove("playing"); }
+ if (!recUrls[i]) { return; }
+ playRecAud = new Audio(recUrls[i]);
+ playRecBtn = btn;
+ btn.classList.add("playing");
+ playRecAud.onended = function(){ btn.classList.remove("playing"); };
+ var p = playRecAud.play();
+ if (p && p.catch) { p.catch(function(){ btn.classList.remove("playing"); }); }
+}
+function doSubmit(){
+ if (submitted) { return; }
+ var n = 0;
+ for (var i = 0; i < 4; i++) { if (recs[i]) { n++; } }
+ if (n < 4) { return; }
+ submitted = true;
+ stopCurrent();
+ stopRecording();
+ all(".recbtn, .again, .stopbtn").forEach(function(b){ b.disabled = true; });
+ var b = $(".submit");
+ b.disabled = true; b.classList.remove("ready"); b.textContent = "Submitted";
+ $(".done-msg").classList.add("show");
+ $(".counter").textContent = "4 of 4 recorded";
+}
+document.addEventListener("click", function(e){
+ var t = e.target.closest("[data-audio], [data-rec], [data-stoprec], [data-playrec], .submit");
+ if (!t) { return; }
+ if (t.classList.contains("submit")) { doSubmit(); return; }
+ if (t.hasAttribute("data-audio")) { playAudio(t.getAttribute("data-audio"), t); return; }
+ if (t.hasAttribute("data-rec")) { startRec(parseInt(t.getAttribute("data-rec"), 10)); return; }
+ if (t.hasAttribute("data-stoprec")) { stopRecording(); return; }
+ if (t.hasAttribute("data-playrec")) { playOwn(parseInt(t.getAttribute("data-playrec"), 10), t); }
+});
+refresh();
+</script>
+</body>
+</html>
