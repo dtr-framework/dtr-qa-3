@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hot Rocks, Half Cooked</title>
+<style>
+:root{--level:#1565C0;--deep:#0D47A1;--ink:#172033;--muted:#5B6B7F;--done:#027A48;--done-bg:#E7F6EF;--miss:#E11D48;
+--teal:#0F9D8A;--teal-bg:#E6F7F4;--teal-ink:#0B5F54;
+--serif:ui-serif,Georgia,"Iowan Old Style",Palatino,serif;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:color-mix(in srgb,var(--level) 5%,#F4F6F9);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+.mast{background:linear-gradient(135deg,var(--level),var(--deep));color:#fff;border-radius:22px;padding:20px 24px 22px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.brand{float:left;font-size:12px;font-weight:700;letter-spacing:.16em;opacity:.92;padding-top:6px}
+.badge{float:right;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:700;letter-spacing:.02em}
+.title{clear:both;text-align:center;font-family:var(--serif);font-size:44px;line-height:1.12;font-weight:700;margin:18px 0 6px}
+.sub{text-align:center;font-size:12.5px;letter-spacing:.08em;opacity:.88}
+.dots{display:flex;justify-content:center;gap:9px;margin-top:14px}
+.dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.75)}
+.dot.on{background:#fff}
+.panel{background:#fff;border:1px solid #E3E8EE;border-radius:18px;margin-top:16px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.seg{padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.seg+.seg{border-top:1px solid #EDF1F5}
+.seg.lead{background:color-mix(in srgb,var(--level) 7%,white);border-radius:17px 17px 0 0}
+.seg .txt{flex:1;min-width:0}
+.lbl{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--muted);margin:0 0 6px}
+.seg.lead .lbl{color:var(--deep)}
+.body{font-size:16px;line-height:1.65;margin:0}
+.seg.lead .body{font-weight:600;color:var(--ink)}
+.seg.hist .body{font-style:italic;color:#41506B}
+.micnote{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5}
+.ico{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:0;background:var(--level);color:#fff;display:inline-flex;align-items:center;justify-content:center;padding:0 0 0 3px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.14);position:relative}
+.ico.playing{background:#C62828;padding-left:0;animation:ssf-pulse 1.4s ease-in-out infinite}
+.ico.playing::before{content:"";width:15px;height:15px;border-radius:3px;background:#fff}
+.playing .pi{display:none !important}
+.lock{background:#121A2B;color:#fff;border-radius:18px;padding:18px 18px 16px;margin-top:16px}
+.lock h2{font-family:var(--serif);font-size:19px;margin:0 0 4px;font-weight:700}
+.lock p{margin:0 0 14px;font-size:14px;line-height:1.5;color:#C9D3E3}
+.cells{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cell{border:1.5px dashed rgba(255,255,255,.35);border-radius:12px;padding:12px 8px;text-align:center;min-height:76px;display:flex;flex-direction:column;justify-content:center;opacity:.55;transition:all .25s}
+.cell .v{font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:.01em}
+.cell .k{font-size:10.5px;font-weight:700;letter-spacing:.1em;color:#C9D3E3;margin-top:5px}
+.cell .n{font-size:10.5px;color:#8C9AB3;margin-bottom:4px;letter-spacing:.08em}
+.cell.on{border:1.5px solid #4ADE80;background:rgba(74,222,128,.12);opacity:1}
+.axis{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.12em;color:#8C9AB3}
+.axis .ln{flex:1;height:2px;background:linear-gradient(90deg,#8C9AB3,rgba(140,154,179,.25))}
+.stop{display:flex;margin-top:16px;background:#fff;border:2px dashed var(--miss);border-radius:18px;overflow:hidden}
+.stop.done{border:2px solid var(--done);background:var(--done-bg)}
+.tab{flex:0 0 66px;width:66px;background:var(--level);color:#fff;display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:10px}
+.stop.done .tab{background:var(--done)}
+.tab .num{font-family:var(--serif);font-size:32px;font-weight:700;line-height:1}
+.lamp{width:12px;height:12px;border-radius:50%;background:var(--miss);box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+.stop.done .lamp{background:#fff}
+.vword{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;font-weight:700;letter-spacing:.18em}
+.sbody{flex:1;min-width:0;padding:16px 18px 18px}
+.who{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.name{font-family:var(--serif);font-size:25px;font-weight:700;line-height:1.15}
+.rel{font-size:14px;color:var(--muted);margin-top:3px}
+.reg{flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.12em;border-radius:999px;padding:5px 11px;margin-top:4px}
+.reg.informal{background:#EEF1F5;color:#46546A}
+.reg.formal{background:var(--ink);color:#fff}
+.listen{width:100%;min-height:44px;border:0;border-radius:12px;background:var(--level);color:#fff;font-size:14.5px;font-weight:700;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;padding:10px 14px}
+.listen.playing{background:#C62828;animation:ssf-pulse 1.4s ease-in-out infinite}
+.listen.playing::before{content:"";width:12px;height:12px;border-radius:2px;background:#fff}
+@keyframes ssf-pulse{0%,100%{opacity:1}50%{opacity:.72}}
+.recpanel{margin-top:12px;border-radius:12px;padding:12px 14px}
+.recpanel.missing{border:2px dashed var(--miss);background:#FFF5F7}
+.recpanel.live{background:#C62828;color:#fff;animation:ssf-pulse 1.4s ease-in-out infinite}
+.recpanel.have{background:#fff;border:2px solid var(--done)}
+.st{display:none}
+.recpanel.missing .st.m,.recpanel.live .st.l,.recpanel.have .st.h{display:block}
+.mline{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--miss);margin-bottom:10px}
+.pdot{width:9px;height:9px;border-radius:50%;background:var(--miss);animation:pdot 1.2s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+.recbtn{width:100%;min-height:44px;border:2px solid var(--miss);background:#fff;color:var(--miss);font-weight:700;font-size:14.5px;border-radius:12px;cursor:pointer;font-family:var(--sans)}
+.lrow{display:flex;align-items:center;gap:12px}
+.sq{width:16px;height:16px;border-radius:3px;background:#fff}
+.lrow .rt{flex:1;font-weight:700;font-size:14.5px}
+.timer{font-variant-numeric:tabular-nums;font-weight:700}
+.stopbtn{background:#fff;color:#C62828;border:0;border-radius:999px;padding:8px 18px;font-weight:700;cursor:pointer;font-size:14px}
+.hrow{display:flex;align-items:center;gap:12px}
+.pbtn{flex:0 0 auto;width:40px;height:40px;border-radius:50%;border:0;background:var(--done);color:#fff;display:inline-flex;align-items:center;justify-content:center;padding-left:3px;cursor:pointer}
+.pbtn.playing{background:#C62828;padding-left:0}
+.pbtn.playing::before{content:"";width:13px;height:13px;border-radius:3px;background:#fff}
+.wave{flex:1;height:34px;min-width:0}
+.wave rect{fill:var(--done)}
+.dur{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--done)}
+.again{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.againbtn{border:2px solid var(--done);background:#fff;color:var(--done);border-radius:999px;padding:7px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.againnote{font-size:12.5px;color:var(--muted)}
+.micerr{display:none;margin-top:8px;font-size:13px;font-weight:700;color:var(--miss)}
+.micerr.show{display:block}
+.gotchip{display:none;margin-top:12px;background:var(--done);color:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;width:max-content;max-width:100%}
+.stop.done .gotchip{display:inline-block}
+.submitwrap{margin-top:22px;text-align:center}
+.submit{min-width:220px;min-height:50px;border:0;border-radius:14px;background:var(--level);color:#fff;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.submit:disabled{background:#90A4AE;cursor:not-allowed}
+.count{margin-top:8px;font-size:14px;font-weight:700;color:var(--muted)}
+.sentmsg{display:none;margin-top:10px;font-size:14px;font-weight:700;color:var(--done)}
+.sentmsg.show{display:block}
+@media (prefers-reduced-motion: reduce){.listen.playing{animation:none}.ico.playing{animation:none}.recpanel.live{animation:none}.pdot{animation:none}}
+@media (max-width:560px){
+.wrap{padding:14px 12px 40px}
+.title{font-size:34px}
+.brand,.badge{float:none;display:inline-block}
+.mast{text-align:center;padding:16px 16px 18px}
+.badge{margin-top:8px}
+.seg{padding:14px}
+.body{font-size:15.5px}
+.ico{width:40px;height:40px}
+.cells{grid-template-columns:repeat(2,1fr)}
+.tab{flex-basis:52px;width:52px}
+.sbody{padding:14px}
+.name{font-size:22px}
+}
+
+/*SUP_STYLE_START*/
+.sup{margin-top:12px;background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:10px;padding:12px 14px}
+.sup .supl{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--teal-ink);margin-bottom:6px}
+.sup .supf{font-size:15.5px;line-height:1.6;color:var(--teal-ink);font-weight:600;margin:0}
+.blank{display:inline-block;width:62px;border-bottom:2px solid var(--teal-ink);margin:0 3px;vertical-align:-3px;height:1em}
+.bank{margin-top:8px;font-size:13.5px;color:var(--teal-ink)}
+.bank b{letter-spacing:.06em;font-size:11px}
+.supbtn{margin-top:10px;border:0;background:var(--teal);color:#fff;border-radius:999px;padding:7px 14px;font-weight:700;font-size:12px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-family:var(--sans)}
+.supbtn.playing{background:#C62828;animation:ssf-pulse 1.4s ease-in-out infinite}
+.supbtn.playing::before{content:"";width:10px;height:10px;border-radius:2px;background:#fff}
+.foot{margin-top:26px;font-size:11.5px;line-height:1.6;color:var(--muted);text-align:center;border-top:1px solid #DDE3EA;padding-top:14px}
+@media (prefers-reduced-motion: reduce){.supbtn.playing{animation:none}}
+/*SUP_STYLE_END*/
+</style>
+</head>
+<body data-tag="SSF-HS9-L1-13001400-HSSCIPHY-MCF-API" data-deck="A">
+<div class="wrap">
+<header class="mast"><div class="brand">DTR SPEECH FUNCTIONS</div><div class="badge">ELPAC Level 1 · Lexile 1300–1400L</div><h1 class="title">Hot Rocks, Half Cooked</h1><div class="sub">SSF-HS9-L1-13001400-HSSCIPHY-MCF-API</div><div class="dots" aria-hidden="true"><span class="dot" id="dot0"></span><span class="dot" id="dot1"></span><span class="dot" id="dot2"></span><span class="dot" id="dot3"></span></div></header>
+<section class="panel" aria-label="The directions"><div class="seg"><div class="txt"><p class="lbl">THE DIRECTIONS</p><p class="body">You will talk to four people. Record what you would say to each one. You can record again as many times as you want. When all four are recorded, click Submit.</p><p class="micnote">The first time you press record, your computer will ask to use your microphone. Click Allow.</p></div><button class="ico" id="btnDir" type="button" aria-label="Play the directions" aria-pressed="false"><svg class="pi" width="15" height="18" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button></div></section>
+<section class="lock" aria-label="The lock"><h2>Where did the heat go?</h2><p>As you record, the four amounts fill in. Take the last three away from the first to find the lost heat.</p><div class="cells"><div class="cell" id="cell0"><div class="n">STOP 1</div><div class="v">?</div><div class="k">ROCKS GAVE OUT</div></div><div class="cell" id="cell1"><div class="n">STOP 2</div><div class="v">?</div><div class="k">DIRT TOOK IN</div></div><div class="cell" id="cell2"><div class="n">STOP 3</div><div class="v">?</div><div class="k">WATER TOOK IN</div></div><div class="cell" id="cell3"><div class="n">STOP 4</div><div class="v">?</div><div class="k">FOOD TOOK IN</div></div></div><div class="axis"><span>MOST HEAT</span><span class="ln"></span><span>LEAST HEAT</span></div></section>
+<section class="panel" aria-label="The scene and the history"><div class="seg lead"><div class="txt"><p class="lbl">THE SCENE</p><p class="body">You solve science mysteries for your school. Yesterday your science club cooked food in an imu. When they opened it, the food was only half cooked. Some heat is missing. Four people each have one number you need.</p></div><button class="ico" id="btnSit" type="button" aria-label="Play the scene" aria-pressed="false"><svg class="pi" width="15" height="18" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button></div><div class="seg hist"><div class="txt"><p class="lbl">THE HISTORY</p><p class="body">This mystery starts with the imu, a Hawaiian ground oven. Native Hawaiians have cooked in it for hundreds of years. Hot rocks and food go into a hole. Dirt covers the hole and keeps the heat inside.</p></div><button class="ico" id="btnHist" type="button" aria-label="Play the history" aria-pressed="false"><svg class="pi" width="15" height="18" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button></div></section>
+<section class="stop" id="stop0" aria-label="Stop 1"><div class="tab"><div class="num">1</div><div class="lamp"></div><div class="vword" id="vword0">NOT YET</div></div><div class="sbody"><div class="who"><div><div class="name">Leilani</div><div class="rel">Your lab partner</div></div><span class="reg informal">INFORMAL</span></div><button class="listen" id="btnAsk0" type="button" aria-label="Listen to Stop 1" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Listen to Stop 1</button><div class="recpanel missing" id="rec0"><div class="st m"><div class="mline"><span class="pdot"></span>Not recorded yet</div><button class="recbtn" id="recbtn0" type="button" aria-label="Record your answer for stop 1">Press to record.</button></div><div class="st l"><div class="lrow"><span class="sq"></span><span class="rt">Recording…</span><span class="timer" id="timer0">0:00</span><button class="stopbtn" id="stopbtn0" type="button" aria-label="Stop recording">Stop</button></div></div><div class="st h"><div class="hrow"><button class="pbtn" id="pbtn0" type="button" aria-label="Play your recording for stop 1" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" id="wave0" viewBox="0 0 300 34" preserveAspectRatio="none" aria-hidden="true"></svg><span class="dur" id="dur0">0:00</span></div><div class="again"><button class="againbtn" id="againbtn0" type="button" aria-label="Record again for stop 1">Record again</button><span class="againnote">You can record as many times as you want.</span></div></div><div class="micerr" id="micerr0">Microphone blocked. Allow the microphone, then try again.</div></div><div class="sup"><div class="supl">SMART SUPPORT</div><p class="supf">Leilani, can I help you <span class="blank" aria-label="blank"></span> the rock numbers in order to finish faster?</p><div class="bank"><b>WORD BANK</b> &nbsp;calculate / estimate</div><button class="supbtn" id="btnSup0" type="button" aria-label="Play SMART SUPPORT for stop 1" aria-pressed="false"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Support</button></div><div class="gotchip">Collected: 30,000 kJ · ROCKS GAVE OUT</div></div></section>
+<section class="stop" id="stop1" aria-label="Stop 2"><div class="tab"><div class="num">2</div><div class="lamp"></div><div class="vword" id="vword1">NOT YET</div></div><div class="sbody"><div class="who"><div><div class="name">Makoa</div><div class="rel">Your neighbor, who helped dig the imu</div></div><span class="reg informal">INFORMAL</span></div><button class="listen" id="btnAsk1" type="button" aria-label="Listen to Stop 2" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Listen to Stop 2</button><div class="recpanel missing" id="rec1"><div class="st m"><div class="mline"><span class="pdot"></span>Not recorded yet</div><button class="recbtn" id="recbtn1" type="button" aria-label="Record your answer for stop 2">Press to record.</button></div><div class="st l"><div class="lrow"><span class="sq"></span><span class="rt">Recording…</span><span class="timer" id="timer1">0:00</span><button class="stopbtn" id="stopbtn1" type="button" aria-label="Stop recording">Stop</button></div></div><div class="st h"><div class="hrow"><button class="pbtn" id="pbtn1" type="button" aria-label="Play your recording for stop 2" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" id="wave1" viewBox="0 0 300 34" preserveAspectRatio="none" aria-hidden="true"></svg><span class="dur" id="dur1">0:00</span></div><div class="again"><button class="againbtn" id="againbtn1" type="button" aria-label="Record again for stop 2">Record again</button><span class="againnote">You can record as many times as you want.</span></div></div><div class="micerr" id="micerr1">Microphone blocked. Allow the microphone, then try again.</div></div><div class="sup"><div class="supl">SMART SUPPORT</div><p class="supf">Makoa, can you repeat the dirt number in order for me to <span class="blank" aria-label="blank"></span> it?</p><div class="bank"><b>WORD BANK</b> &nbsp;confirm / change</div><button class="supbtn" id="btnSup1" type="button" aria-label="Play SMART SUPPORT for stop 2" aria-pressed="false"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Support</button></div><div class="gotchip">Collected: 11,000 kJ · DIRT TOOK IN</div></div></section>
+<section class="stop" id="stop2" aria-label="Stop 3"><div class="tab"><div class="num">3</div><div class="lamp"></div><div class="vword" id="vword2">NOT YET</div></div><div class="sbody"><div class="who"><div><div class="name">Mr. Akana</div><div class="rel">Leilani&#x27;s grandfather, who built the imu</div></div><span class="reg formal">FORMAL</span></div><button class="listen" id="btnAsk2" type="button" aria-label="Listen to Stop 3" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Listen to Stop 3</button><div class="recpanel missing" id="rec2"><div class="st m"><div class="mline"><span class="pdot"></span>Not recorded yet</div><button class="recbtn" id="recbtn2" type="button" aria-label="Record your answer for stop 3">Press to record.</button></div><div class="st l"><div class="lrow"><span class="sq"></span><span class="rt">Recording…</span><span class="timer" id="timer2">0:00</span><button class="stopbtn" id="stopbtn2" type="button" aria-label="Stop recording">Stop</button></div></div><div class="st h"><div class="hrow"><button class="pbtn" id="pbtn2" type="button" aria-label="Play your recording for stop 3" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" id="wave2" viewBox="0 0 300 34" preserveAspectRatio="none" aria-hidden="true"></svg><span class="dur" id="dur2">0:00</span></div><div class="again"><button class="againbtn" id="againbtn2" type="button" aria-label="Record again for stop 3">Record again</button><span class="againnote">You can record as many times as you want.</span></div></div><div class="micerr" id="micerr2">Microphone blocked. Allow the microphone, then try again.</div></div><div class="sup"><div class="supl">SMART SUPPORT</div><p class="supf">Mr. Akana, I apologize for <span class="blank" aria-label="blank"></span>, can I have the water number in order to finish the mystery?</p><div class="bank"><b>WORD BANK</b> &nbsp;interrupting / leaving</div><button class="supbtn" id="btnSup2" type="button" aria-label="Play SMART SUPPORT for stop 3" aria-pressed="false"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Support</button></div><div class="gotchip">Collected: 8,000 kJ · WATER TOOK IN</div></div></section>
+<section class="stop" id="stop3" aria-label="Stop 4"><div class="tab"><div class="num">4</div><div class="lamp"></div><div class="vword" id="vword3">NOT YET</div></div><div class="sbody"><div class="who"><div><div class="name">Ms. Nakamura</div><div class="rel">The teacher who runs the science club</div></div><span class="reg formal">FORMAL</span></div><button class="listen" id="btnAsk3" type="button" aria-label="Listen to Stop 4" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Listen to Stop 4</button><div class="recpanel missing" id="rec3"><div class="st m"><div class="mline"><span class="pdot"></span>Not recorded yet</div><button class="recbtn" id="recbtn3" type="button" aria-label="Record your answer for stop 4">Press to record.</button></div><div class="st l"><div class="lrow"><span class="sq"></span><span class="rt">Recording…</span><span class="timer" id="timer3">0:00</span><button class="stopbtn" id="stopbtn3" type="button" aria-label="Stop recording">Stop</button></div></div><div class="st h"><div class="hrow"><button class="pbtn" id="pbtn3" type="button" aria-label="Play your recording for stop 4" aria-pressed="false"><svg class="pi" width="13" height="15" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg></button><svg class="wave" id="wave3" viewBox="0 0 300 34" preserveAspectRatio="none" aria-hidden="true"></svg><span class="dur" id="dur3">0:00</span></div><div class="again"><button class="againbtn" id="againbtn3" type="button" aria-label="Record again for stop 4">Record again</button><span class="againnote">You can record as many times as you want.</span></div></div><div class="micerr" id="micerr3">Microphone blocked. Allow the microphone, then try again.</div></div><div class="sup"><div class="supl">SMART SUPPORT</div><p class="supf">Ms. Nakamura, can I <span class="blank" aria-label="blank"></span> the food number given that I have already <span class="blank" aria-label="blank"></span> the other three measurements?</p><div class="bank"><b>WORD BANK</b> &nbsp;receive / return · gathered / ignored</div><button class="supbtn" id="btnSup3" type="button" aria-label="Play SMART SUPPORT for stop 4" aria-pressed="false"><svg class="pi" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M1 1.2v10.6a.6.6 0 0 0 .92.5l8.3-5.3a.6.6 0 0 0 0-1L1.92.7A.6.6 0 0 0 1 1.2z" fill="currentColor"/></svg>Support</button></div><div class="gotchip">Collected: 5,000 kJ · FOOD TOOK IN</div></div></section>
+<div class="submitwrap"><button class="submit" id="submit" type="button" disabled>Submit</button><div class="count" id="count" aria-live="polite">0 of 4 recorded</div><div class="sentmsg" id="sentmsg" aria-live="polite"></div></div>
+<footer class="foot">HS Physical Science 9-10 · Energy Distribution in Closed Systems<br>NGSS HS-PS3-4 (supporting NGSS HS-PS3-1) · CA ELD PI.A.4, PII.B.3, PII.B.4, PII.B.5 · ELPAC Speaking: Speech Functions<br>DTR Framework · Doorway to Reclassification</footer>
+</div>
+<script>
+(function(){
+var B64 = {
+ dir:"[BASE64_DIRECTIONS]", sit:"[BASE64_SITUATION]", hist:"[BASE64_HISTORY]",
+ ask0:"[BASE64_ASK1]", ask1:"[BASE64_ASK2]", ask2:"[BASE64_ASK3]", ask3:"[BASE64_ASK4]"
+};
+B64.ss0="[BASE64_SS_STOP1]"; B64.ss1="[BASE64_SS_STOP2]"; B64.ss2="[BASE64_SS_STOP3]"; B64.ss3="[BASE64_SS_STOP4]";
+var CELLS = [{"value": "30,000 kJ", "label": "ROCKS GAVE OUT"}, {"value": "11,000 kJ", "label": "DIRT TOOK IN"}, {"value": "8,000 kJ", "label": "WATER TOOK IN"}, {"value": "5,000 kJ", "label": "FOOD TOOK IN"}];
+var urls = {}, cur = null, curBtn = null;
+function urlFor(k){
+  if (urls[k]) return urls[k];
+  var s = B64[k];
+  if (!s || s.charAt(0) === "[") return null;
+  try {
+    var bin = atob(s), arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    urls[k] = URL.createObjectURL(new Blob([arr], {type:"audio/mpeg"}));
+    return urls[k];
+  } catch (e) { return null; }
+}
+function stopCurrent(){
+  if (cur) { try { cur.pause(); } catch (e) {} cur = null; }
+  if (curBtn) { curBtn.classList.remove("playing"); curBtn.setAttribute("aria-pressed","false"); curBtn = null; }
+}
+function playSrc(src, btn){
+  if (curBtn === btn) { stopCurrent(); return; }
+  stopCurrent();
+  if (!src) return;
+  var a = new Audio(src);
+  cur = a; curBtn = btn;
+  btn.classList.add("playing"); btn.setAttribute("aria-pressed","true");
+  a.onended = function(){ if (cur === a) stopCurrent(); };
+  var p = a.play();
+  if (p && p.catch) p.catch(function(){ if (cur === a) stopCurrent(); });
+}
+function playAudio(k, btn){ playSrc(urlFor(k), btn); }
+function bind(id, k){ var b = document.getElementById(id); if (b) b.addEventListener("click", function(){ playAudio(k, b); }); }
+bind("btnDir","dir"); bind("btnSit","sit"); bind("btnHist","hist");
+for (var i = 0; i < 4; i++) { bind("btnAsk"+i, "ask"+i); }
+for (var q = 0; q < 4; q++) { bind("btnSup"+q, "ss"+q); }
+
+var takes = [null,null,null,null], recorder = null, recIdx = -1, chunks = [], t0 = 0, tick = null, locked = false, sent = false;
+function pickMime(){
+  if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return "";
+  var c = ["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/aac"];
+  for (var i = 0; i < c.length; i++) if (MediaRecorder.isTypeSupported(c[i])) return c[i];
+  return "";
+}
+function fmt(ms){ var s = Math.max(0, Math.round(ms/1000)); return Math.floor(s/60) + ":" + ("0" + (s%60)).slice(-2); }
+function panel(i){ return document.getElementById("rec"+i); }
+function setState(i, s){ var p = panel(i); p.className = "recpanel " + s; }
+function drawWave(i, blob){
+  var svg = document.getElementById("wave"+i), n = 48;
+  function paint(vals){
+    var out = "", w = 300 / n;
+    for (var k = 0; k < n; k++) { var h = Math.max(4, Math.round(vals[k] * 32)); out += '<rect x="' + (k*w + 1).toFixed(1) + '" y="' + ((34 - h)/2).toFixed(1) + '" width="' + (w - 2).toFixed(1) + '" height="' + h + '" rx="1.5"/>'; }
+    svg.innerHTML = out;
+  }
+  var fallback = []; for (var k = 0; k < n; k++) fallback.push(0.25 + 0.55 * Math.abs(Math.sin(k * 1.7 + i)));
+  paint(fallback);
+  try {
+    var AC = window.AudioContext || window.webkitAudioContext; if (!AC || !blob.arrayBuffer) return;
+    blob.arrayBuffer().then(function(buf){
+      var ctx = new AC();
+      return new Promise(function(res, rej){ ctx.decodeAudioData(buf, res, rej); }).then(function(ab){
+        var d = ab.getChannelData(0), step = Math.floor(d.length / n) || 1, vals = [], mx = 0;
+        for (var k = 0; k < n; k++) { var s = 0; for (var j = k*step; j < (k+1)*step && j < d.length; j++) s = Math.max(s, Math.abs(d[j])); vals.push(s); mx = Math.max(mx, s); }
+        if (mx > 0) paint(vals.map(function(v){ return 0.15 + 0.85 * v / mx; }));
+        if (ctx.close) ctx.close();
+      });
+    }).catch(function(){});
+  } catch (e) {}
+}
+function refresh(){
+  var c = 0;
+  for (var i = 0; i < 4; i++) {
+    var have = !!takes[i];
+    if (have) c++;
+    document.getElementById("stop"+i).classList.toggle("done", have);
+    document.getElementById("vword"+i).textContent = have ? "RECORDED" : "NOT YET";
+    document.getElementById("dot"+i).classList.toggle("on", have);
+    var cell = document.getElementById("cell"+i);
+    cell.classList.toggle("on", have);
+    cell.querySelector(".v").textContent = have ? CELLS[i].value : "?";
+  }
+  document.getElementById("count").textContent = c + " of 4 recorded";
+  document.getElementById("submit").disabled = locked || c < 4;
+}
+function startRec(i){
+  if (locked || recorder) return;
+  stopCurrent();
+  var err = document.getElementById("micerr"+i);
+  err.classList.remove("show");
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { err.classList.add("show"); return; }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    var mime = pickMime();
+    try { recorder = mime ? new MediaRecorder(stream, {mimeType: mime}) : new MediaRecorder(stream); }
+    catch (e) { recorder = new MediaRecorder(stream); }
+    recIdx = i; chunks = [];
+    recorder.ondataavailable = function(ev){ if (ev.data && ev.data.size) chunks.push(ev.data); };
+    recorder.onstop = function(){
+      stream.getTracks().forEach(function(t){ t.stop(); });
+      var dur = Date.now() - t0, idx = recIdx;
+      var blob = new Blob(chunks, {type: recorder.mimeType || mime || "audio/webm"});
+      recorder = null; recIdx = -1; clearInterval(tick);
+      if (blob.size > 0) {
+        if (takes[idx] && takes[idx].url) URL.revokeObjectURL(takes[idx].url);
+        takes[idx] = {blob: blob, url: URL.createObjectURL(blob), dur: dur, type: blob.type};
+        document.getElementById("dur"+idx).textContent = fmt(dur);
+        drawWave(idx, blob);
+        setState(idx, "have");
+      } else { setState(idx, takes[idx] ? "have" : "missing"); }
+      refresh();
+    };
+    t0 = Date.now();
+    document.getElementById("timer"+i).textContent = "0:00";
+    tick = setInterval(function(){ document.getElementById("timer"+i).textContent = fmt(Date.now() - t0); }, 250);
+    setState(i, "live");
+    recorder.start();
+  }).catch(function(){ err.classList.add("show"); });
+}
+function stopRec(){ if (recorder && recorder.state !== "inactive") recorder.stop(); }
+for (var r = 0; r < 4; r++) (function(i){
+  document.getElementById("recbtn"+i).addEventListener("click", function(){ startRec(i); });
+  document.getElementById("againbtn"+i).addEventListener("click", function(){ startRec(i); });
+  document.getElementById("stopbtn"+i).addEventListener("click", stopRec);
+  document.getElementById("pbtn"+i).addEventListener("click", function(){ if (takes[i]) playSrc(takes[i].url, document.getElementById("pbtn"+i)); });
+})(r);
+document.getElementById("submit").addEventListener("click", function(){
+  if (locked || sent) return;
+  for (var i = 0; i < 4; i++) if (!takes[i]) return;
+  locked = true; sent = true;
+  stopCurrent(); stopRec();
+  var btns = document.querySelectorAll(".recbtn,.againbtn,.stopbtn");
+  for (var k = 0; k < btns.length; k++) btns[k].disabled = true;
+  refresh();
+  document.getElementById("submit").textContent = "Submitted";
+  var msg = document.getElementById("sentmsg");
+  var q = new URLSearchParams(location.search), ep = q.get("endpoint");
+  if (ep) {
+    var fd = new FormData();
+    fd.append("studentId", q.get("sid") || ""); fd.append("sheetId", q.get("sheet") || ""); fd.append("tag", document.body.getAttribute("data-tag"));
+    for (var j = 0; j < 4; j++) fd.append("stop" + (j+1), takes[j].blob, "stop" + (j+1) + (takes[j].type.indexOf("mp4") > -1 ? ".m4a" : ".webm"));
+    fetch(ep, {method:"POST", body: fd, mode:"no-cors"}).then(function(){ msg.textContent = "Your four recordings were sent to your teacher."; msg.classList.add("show"); })
+      .catch(function(){ msg.textContent = "Your recordings are locked, but they did not send. Tell your teacher."; msg.classList.add("show"); });
+  } else { msg.textContent = "Your four recordings are locked."; msg.classList.add("show"); }
+});
+refresh();
+})();
+</script>
+</body>
+</html>
